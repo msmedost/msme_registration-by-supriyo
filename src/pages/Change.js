@@ -23,6 +23,7 @@ function Change() {
   const [Link, setLink] = useState(user?.link || '');
   const [Disc, setDisc] = useState(user?.disc || '');
   const [Logo, setLogo] = useState(null);
+  const [Desc, setDesc] = useState(user?.desc || '');
   const [isEmailValid, setIsEmailValid] = useState(true);
   const [isDobValid, setIsDobValid] = useState(true);
   const [isValidPin, setIsValidPin] = useState(true);
@@ -116,6 +117,7 @@ function Change() {
     fd.append("city", City);
     fd.append("link", Link);
     fd.append("disc", Disc);
+    fd.append("desc",Desc);
     fd.append("logo", Logo);
 
     try {
@@ -126,7 +128,7 @@ function Change() {
 
       if (resp.ok) {
         alert("Details updated successfully");
-        navigate("/home");
+        navigate("/");
       } else {
         const errorData = await resp.json();
         alert(`Error: ${errorData.error}`);
@@ -288,6 +290,23 @@ function Change() {
               <div className="invalid-feedback">Discount must be between 0 and 100</div>
             )}
           </div>
+
+          <div className="col-md-6 mb-2">
+  <div className="field-container">
+    <label htmlFor="discount" className="form-label">
+      Offer Description:
+    </label>
+    <input
+      type="text"
+      className={`form-control ${!isDiscValid ? 'is-invalid' : ''}`}
+      id="discount"
+      placeholder="Enter description here"
+      value={Desc}
+      onChange={(e) => setDesc(e.target.value)} // Assuming you are using a state variable to manage the input value
+      // required
+    />
+  </div>
+</div>
 
           {/* Personal Details */}
           <div className="col-md-6 mb-2">

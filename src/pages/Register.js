@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import axios from 'axios';
 
 function Register({ onChange }) {
   const [captcha, setCaptcha] = useState(generateCaptcha());
@@ -19,6 +20,7 @@ function Register({ onChange }) {
   const [City, setCity] = useState('');
   const [Link, setLink] = useState('');
   const [Disc,setDisc] = useState('');
+  const [Desc,setDesc] = useState('');
   const [Logo, setLogo] = useState(null);
   const [isEmailValid, setIsEmailValid] = useState(true);
   const [isDobValid, setIsDobValid] = useState(true);
@@ -28,6 +30,8 @@ function Register({ onChange }) {
   const [captchaError, setCaptchaError] = useState(false);
   const [linkError, setLinkError] = useState('');
   const [contactError, setContactError] = useState('');
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState('');
   
   
 
@@ -158,7 +162,7 @@ function Register({ onChange }) {
     fd.append("dob", DOB);
     fd.append("group", Group);
     fd.append("bName", BusinessName);
-    fd.append("category", Category);
+    fd.append("category", selectedCategory);
     fd.append("nature", Nature);
     fd.append("address", Address);
     fd.append("pin", Pin);
@@ -166,6 +170,7 @@ function Register({ onChange }) {
     fd.append("city", City);
     fd.append("link", Link);
     fd.append("disc",Disc);
+    fd.append("desc",Desc);
     fd.append("logo", Logo);
 
     const resp = await fetch("http://localhost:2000/ins", {
@@ -193,11 +198,29 @@ function Register({ onChange }) {
     setLoc('');
     setCity('');
     setLink('');
+    setDesc('');
     setDisc('');
     setLogo(null);
     setCaptcha(generateCaptcha());
     setUserInput('');
   }
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  const fetchCategories = async () => {
+    try {
+      const response = await axios.get('http://localhost:2000/categories');
+      setCategories(response.data);
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+    }
+  };
+
+  const handleCategoryChange = (event) => {
+    setSelectedCategory(event.target.value);
+  };
 
   // useEffect(() => {
   //   let nameTimeout;
@@ -300,18 +323,23 @@ function Register({ onChange }) {
             </div>
           </div>
           <div className="col-md-6 mb-2">
-            <div className="field-container">
-              <label htmlFor="businessCategorySelect" className="form-label">
-                Business Category:<span style={{ color: 'red' }}>*</span>
-              </label>
-              <select className="form-select" id="businessCategorySelect" value={Category} onChange={(e) => setCategory(e.target.value)} required>
-                <option value="">Select</option>
-                <option value="SALOON">SALOON</option>
-                <option value="PHARMACY">PHARMACY</option>
-                <option value="Hotels and Restaurants">Hotels and Restaurants</option>
-                <option value="Others">Others</option>
-              </select>
-            </div>
+          <div className="field-container">
+        <label htmlFor="businessCategorySelect" className="form-label">
+          Business Category:<span style={{ color: 'red' }}>*</span>
+        </label>
+        <select
+          className="form-select"
+          id="businessCategorySelect"
+          value={selectedCategory}
+          onChange={handleCategoryChange}
+          required
+        >
+          <option value="">Select</option>
+          {categories.map(category => (
+            <option key={category._id} value={category.name}>{category.name}</option>
+          ))}
+        </select>
+      </div>
           </div>
 
           <div className="col-md-6 mb-2">
@@ -465,6 +493,24 @@ function Register({ onChange }) {
               )}
             </div>
           </div>
+
+          <div className="col-md-6 mb-2">
+  <div className="field-container">
+    <label htmlFor="discount" className="form-label">
+      Offer Description:
+    </label>
+    <input
+      type="text"
+      className={`form-control ${!isDiscValid ? 'is-invalid' : ''}`}
+      id="discount"
+      placeholder="Enter description here"
+      value={Desc}
+      onChange={(e) => setDesc(e.target.value)} // Assuming you are using a state variable to manage the input value
+      // required
+    />
+  </div>
+</div>
+
           <div className="col-md-6 mb-2"></div>
           {/* <div className="col-md-6 mb-4"><h1>Details</h1></div> */}
 
