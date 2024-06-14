@@ -173,7 +173,7 @@ function Register({ onChange }) {
     fd.append("desc",Desc);
     fd.append("logo", Logo);
 
-    const resp = await fetch("http://localhost:2000/ins", {
+    const resp = await fetch("http://https://msmeserver.onrender.com/ins", {
       method: 'POST',
       body: fd,
     });
@@ -211,7 +211,7 @@ function Register({ onChange }) {
 
   const fetchCategories = async () => {
     try {
-      const response = await axios.get('http://localhost:2000/categories');
+      const response = await axios.get('http://https://msmeserver.onrender.com/categories');
       setCategories(response.data);
     } catch (error) {
       console.error('Error fetching categories:', error);

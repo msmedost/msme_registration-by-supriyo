@@ -41,7 +41,7 @@ function Update() {
     fd.append("email", Email);
 
     try {
-      const resp = await fetch("http://localhost:2000/check", {
+      const resp = await fetch("http://https://msmeserver.onrender.com/check", {
         method: 'POST',
         body: fd,
       });
