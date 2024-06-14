@@ -121,7 +121,7 @@ function Change() {
     fd.append("logo", Logo);
 
     try {
-      const resp = await fetch(`http://https://msmeserver.onrender.com/update-form-data/${user._id}`, {
+      const resp = await fetch(`https://msmeserver.onrender.com/update-form-data/${user._id}`, {
         method: 'PUT',
         body: fd,
       });
