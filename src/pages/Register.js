@@ -332,7 +332,7 @@ function Register({ onChange }) {
           id="businessCategorySelect"
           value={selectedCategory}
           onChange={handleCategoryChange}
-          required
+          // required
         >
           <option value="">Select</option>
           {categories.map(category => (
